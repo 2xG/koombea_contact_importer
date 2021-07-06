@@ -2,7 +2,7 @@
 
 class ContactsController < ApplicationController
   def index
-    @contacts = current_user.contacts
+    @contacts = current_user.contacts.imported
   end
 
   def import

@@ -1,14 +1,33 @@
-%p#notice= notice
-%h1 Contacts
-%table
-  %thead
-    %tr
-      %th{:colspan => "3"}
-  %tbody
-    - @contacts.each do |contact|
-      %tr
-        %td= link_to 'Show', contact
-        %td= link_to 'Edit', edit_contact_path(contact)
-        %td= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Contact', new_contact_path
+.row
+  .col
+    %p#notice= notice
+    .row
+      .col
+        %h1
+          Contacts
+      .col
+        %form.form
+          .input-group.mb-3
+            %input.form-control#file{type: :file}
+            %label.input-group-text{for: :file} Upload CSV
+    %table.table.table-striped.table-hover
+      %thead
+        %tr
+          %th name
+          %th dob
+          %th phone
+          %th address
+          %th credit_card
+          %th franchise
+          %th email
+      %tbody
+        - @contacts.each do |contact|
+          %tr
+            %td= contact.name
+            %td= format_dob contact.dob
+            %td= contact.phone
+            %td= contact.address
+            %td= contact.credit_card
+            %td= contact.franchise
+            %td= contact.email
+    %br/
