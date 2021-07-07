@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_06_075531) do
+ActiveRecord::Schema.define(version: 2021_07_07_055947) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -43,19 +44,31 @@ ActiveRecord::Schema.define(version: 2021_07_06_075531) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "contact_lists", force: :cascade do |t|
+    t.string "status", default: "on_hold", null: false
+    t.hstore "mapping", default: {}
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "header_row", default: false
+    t.index ["user_id"], name: "index_contact_lists_on_user_id"
+  end
+
   create_table "contacts", force: :cascade do |t|
     t.string "name", null: false
-    t.date "dob", null: false
+    t.date "dob"
     t.string "phone", null: false
     t.string "address", null: false
     t.string "credit_card", null: false
-    t.string "franchise", null: false
+    t.string "franchise"
     t.string "email", null: false
     t.boolean "imported", null: false
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "email"], name: "index_contacts_on_user_id_and_email", unique: true
+    t.bigint "contact_list_id"
+    t.text "error_list"
+    t.index ["contact_list_id"], name: "index_contacts_on_contact_list_id"
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
@@ -73,5 +86,7 @@ ActiveRecord::Schema.define(version: 2021_07_06_075531) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "contact_lists", "users"
+  add_foreign_key "contacts", "contact_lists"
   add_foreign_key "contacts", "users"
 end

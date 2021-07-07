@@ -5,4 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :rememberable
 
   has_many :contacts
+  has_many :contact_lists
+
+  default_scope { order(created_at: :desc) }
 end

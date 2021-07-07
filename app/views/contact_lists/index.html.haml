@@ -1,0 +1,20 @@
+%h1 Uploaded lists
+
+%table.table.table-striped.table-hover.table-sm
+  %thead
+    %tr
+      %th Upload date
+      %th Status
+      %th Download
+      %th Actions
+
+  %tbody
+    - @contact_lists.each do |contact_list|
+      %tr
+        %td= contact_list.created_at
+        %td= contact_list.status
+        %td= link_to 'Download', url_for(contact_list.csv) if contact_list.csv.attached?
+        %td
+          - unless contact_list.mapped?
+            = link_to 'Map columns', edit_contact_list_path(contact_list)
+%br

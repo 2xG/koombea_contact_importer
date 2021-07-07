@@ -31,3 +31,24 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    attributes:
+      contact:
+        amex: American Express
+        discover: Discover
+        jcb: JCB
+        mastercard: MasterCard
+        visa: Visa
+        diners: Diners Club
+    errors:
+      models:
+        contact:
+          attributes:
+            email:
+              exists: 'is duplicated'
+        contact_list:
+          attributes:
+            mapping:
+              incomplete: 'is incomplete'
+              duplicates: 'contains "%{columns}" more than once'

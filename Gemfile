@@ -31,6 +31,7 @@ gem 'kaminari'
 gem 'haml'
 gem 'haml-rails', '~> 2.0'
 gem 'credit_card_validations', "~> 4.1.0"
+gem 'active_storage_validations'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -15,6 +15,7 @@
           %th Credit card
           %th Franchise
           %th Email
+          %th Errors
       %tbody
         - @contacts.each do |contact|
           %tr
@@ -25,4 +26,5 @@
             %td= contact.credit_card
             %td= Contact.human_attribute_name("contact.#{contact.franchise}")
             %td= contact.email
+            %td= contact.error_list
     = paginate @contacts

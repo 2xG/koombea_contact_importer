@@ -1,0 +1,30 @@
+%h1
+  = link_to contact_lists_url, class: :btn do
+    <
+  Column mapping
+.row
+  .col
+    = form_for @contact_list do |f|
+      %table.table.table-striped.table-hover.table-sm
+        %thead
+          %tr
+            %th
+            - @contact_list.csv_preview.first.count.times do |n|
+              %th
+                = f.select :mapping,
+                    options_for_select(Contact.attribute_map),
+                    { include_blank: 'none' },
+                    name: "contact_list[mapping][#{n}]",
+                    class: 'form-select form-select-sm'
+            %th
+              = f.submit 'Confirm'
+        %tbody
+          - @contact_list.csv_preview.each_with_index do |row, i|
+            %tr
+              %td
+                - if i.zero?
+                  .form-check.form-switch.form-check-inline
+                    = f.check_box :header_row, class: 'form-check-input'
+                  = f.label :header_row, 'Header', class: 'form-check-label'
+              - row.each do |cell|
+                %td= cell
