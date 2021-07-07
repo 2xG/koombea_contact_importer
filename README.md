@@ -1,6 +1,6 @@
 # Koombea Contact Importer
 
-This is a test project as a part of Koombea tech assessment. You can read the task itself here 
+This is a test project as a part of Koombea tech assessment. You can read the task itself [here](TASK.md) 
 
 You can try this app here https://koombea-contact-importer.herokuapp.com/
 
