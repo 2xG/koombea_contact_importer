@@ -17,14 +17,18 @@
           %th Email
           %th Errors
       %tbody
-        - @contacts.each do |contact|
+        - if @contacts.count.positive?
+          - @contacts.each do |contact|
+            %tr
+              %td= contact.name
+              %td= format_dob contact.dob
+              %td= contact.phone
+              %td= contact.address
+              %td= contact.credit_card
+              %td= Contact.human_attribute_name("contact.#{contact.franchise}")
+              %td= contact.email
+              %td= contact.error_list
+        - else
           %tr
-            %td= contact.name
-            %td= format_dob contact.dob
-            %td= contact.phone
-            %td= contact.address
-            %td= contact.credit_card
-            %td= Contact.human_attribute_name("contact.#{contact.franchise}")
-            %td= contact.email
-            %td= contact.error_list
+            %td.text-center{colspan: 8} No error records
     = paginate @contacts

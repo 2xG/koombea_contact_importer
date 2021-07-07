@@ -9,12 +9,17 @@
       %th Actions
 
   %tbody
-    - @contact_lists.each do |contact_list|
+    - if @contact_lists.count.positive?
+
+      - @contact_lists.each do |contact_list|
+        %tr
+          %td= contact_list.created_at
+          %td= contact_list.status
+          %td= link_to 'Download', url_for(contact_list.csv) if contact_list.csv.attached?
+          %td
+            - unless contact_list.mapped?
+              = link_to 'Map columns', edit_contact_list_path(contact_list)
+    - else
       %tr
-        %td= contact_list.created_at
-        %td= contact_list.status
-        %td= link_to 'Download', url_for(contact_list.csv) if contact_list.csv.attached?
-        %td
-          - unless contact_list.mapped?
-            = link_to 'Map columns', edit_contact_list_path(contact_list)
+        %td.text-center{colspan: 4} No contact lists loaded
 %br

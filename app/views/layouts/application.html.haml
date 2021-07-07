@@ -11,24 +11,29 @@
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   %body
     .container
-      .row
-        .col
-        = form_for :contact_list, url: contact_lists_path, multipart: true, html: { class: :form } do |f|
-          .input-group.mb-3
-            = f.label :csv, class: 'input-group-text' do
-              Contacts CSV
-            = f.file_field :csv, class: 'form-control'
-            = f.submit 'Upload', class: 'btn btn-outline-secondary'
-        .col
-          %p#notice
-            - flash.each do |_, msg|
-              - Array.wrap(msg).each do |text|
-                .alert.alert-danger= text
-          %ul.nav.nav-tabs
-            %li.nav-item
-              = link_to "Contacts", contacts_path, class: 'nav-link' + (' active' if current_page? contacts_path).to_s
-            %li.nav-item
-              = link_to "Lists", contact_lists_path, class: 'nav-link' + (' active' if current_controller?(:contact_lists)).to_s
-            %li.nav-item
-              = link_to "Errors", errors_contacts_path, class: 'nav-link' + (' active' if current_page? errors_contacts_path).to_s
+      - if user_signed_in?
+        .row
+          .col
+          = form_for :contact_list, url: contact_lists_path, multipart: true, html: { class: :form } do |f|
+            .input-group.mb-3
+              = f.label :csv, class: 'input-group-text' do
+                Contacts CSV
+              = f.file_field :csv, class: 'form-control'
+              = f.submit 'Upload', class: 'btn btn-outline-secondary'
+          .col
+            %p#notice
+              - flash.each do |_, msg|
+                - Array.wrap(msg).each do |text|
+                  .alert.alert-danger= text
+
+            %ul.nav.nav-tabs.position-relative
+              %li.nav-item
+                = link_to "Contacts", contacts_path,
+                                      class: 'nav-link' + (' active' if current_page?(contacts_path) || current_page?(root_path)).to_s
+              %li.nav-item
+                = link_to "Lists", contact_lists_path, class: 'nav-link' + (' active' if current_controller?(:contact_lists)).to_s
+              %li.nav-item
+                = link_to "Errors", errors_contacts_path, class: 'nav-link' + (' active' if current_page? errors_contacts_path).to_s
+              %li.position-absolute.top-0.end-0
+                = link_to 'Log out', destroy_user_session_path, class: 'btn btn-info', method: :delete
       = yield
