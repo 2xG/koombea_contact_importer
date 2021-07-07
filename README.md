@@ -1,7 +1,10 @@
 # Koombea Contact Importer
 
-This is a test project as a part of Koombea tech assessment.
+This is a test project as a part of Koombea tech assessment. You can read the task itself here 
 
+You can try this app here https://koombea-contact-importer.herokuapp.com/
+
+In case you want to run this application locally please read below.
 This project uses Ruby v2.7.0  
 You also need [Yarn](https://yarnpkg.com/) to be installed
 For Sidekiq you should have a Redis server running.
@@ -22,6 +25,8 @@ You can start this application by running:
 ```shell
 $ bundle exec rails s
 ```
+then you can access the application on following URL http://localhost:3000
+
 For background job processing you need to start Sidekiq:
 ```shell
 $ bundle exec sidekiq
