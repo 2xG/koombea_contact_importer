@@ -19,9 +19,9 @@ class ContactListWorker
     end
 
     if contact_list.contacts.imported.count.positive?
-      finished!
+      contact_list.finished!
     else
-      failed!
+      contact_list.failed!
     end
   end
 end
