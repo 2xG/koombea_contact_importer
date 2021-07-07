@@ -3,7 +3,7 @@
     .row
       .col
         %h1
-          Contacts
+          Errors
     = paginate @contacts
     %table.table.table-striped.table-hover.table-sm
       %thead
@@ -27,7 +27,7 @@
               %td= contact.credit_card
               %td= Contact.human_attribute_name("contact.#{contact.franchise}")
               %td= contact.email
-              %td= contact.error_list
+              %td= error_list contact
         - else
           %tr
             %td.text-center{colspan: 8} No error records
