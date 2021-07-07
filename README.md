@@ -38,7 +38,7 @@ For login you can use a pre-seeded account:
 
 or register your own.
 
-You can generate a test CSV file running:
+You can use test CSV from the "example" directory o you can generate a test CSV file running:
 ```shell
 $ bundle exec rails r csv_generator.rb
 ```
