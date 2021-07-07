@@ -36,24 +36,15 @@ class ContactList < ApplicationRecord
   end
 
   def create_contacts
-    processing!
-    csv.open do |csv_file|
-      CSV.foreach(csv_file, headers: header_row?) do |row|
-        contact = contacts.build row2contact_attributes(row)
-        unless contact.save
-          contact.imported = false
-          contact.error_list = contact.errors.full_messages.join("\n")
-          contact.errors.clear
-          contact.save
-        end
-      end
-    end
+    ContactListWorker.perform_async(id)
+  end
 
-    if contacts.imported.count.positive?
-      finished!
-    else
-      failed!
+  def row2contact_attributes(row)
+    attr_hash = { user: user, imported: true }
+    Contact.attribute_map.to_h.values.map(&:to_s).each do |attr|
+      attr_hash[attr] = row[mapping[attr].to_i].to_s.strip
     end
+    attr_hash
   end
 
   private
@@ -73,11 +64,4 @@ class ContactList < ApplicationRecord
     self[:mapping] = mapping.invert.except('')
   end
 
-  def row2contact_attributes(row)
-    attr_hash = { user: user, imported: true }
-    Contact.attribute_map.to_h.values.map(&:to_s).each do |attr|
-      attr_hash[attr] = row[mapping[attr].to_i].to_s.strip
-    end
-    attr_hash
-  end
 end

@@ -1,25 +1,40 @@
-# README
+# Koombea Contact Importer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a test project as a part of Koombea tech assessment.
 
-Things you may want to cover:
+This project uses Ruby v2.7.0  
+You also need [Yarn](https://yarnpkg.com/) to be installed
+For Sidekiq you should have a Redis server running.
 
-* Ruby version
-  2.7.0
+After cloning the repository you should go to project directory and run the command:
+```shell
+$ bundle install
+```
+```shell
+$ yarn install
+```
+Then you need to setup your database:
+```shell
+$ bundle exec rails db:setup
+```
 
-* System dependencies
+You can start this application by running:
+```shell
+$ bundle exec rails s
+```
+For background job processing you need to start Sidekiq:
+```shell
+$ bundle exec sidekiq
+```
 
-* Configuration
+For login you can use a pre-seeded account:
+* **email**: user@example.com,
+* **password**: test_TEST_7357
 
-* Database creation
+or register your own.
 
-* Database initialization
+You can generate a test CSV file running:
+```shell
+$ bundle exec rails r csv_generator.rb
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

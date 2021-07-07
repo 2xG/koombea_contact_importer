@@ -21,7 +21,7 @@ class ContactListsController < ApplicationController
 
   def update
     if @contact_list.update(contact_list_params)
-      redirect_to contact_lists_path, notice: "Contact list was successfully mapped"
+      redirect_to contact_lists_path, notice: 'Contact list is in the processing queue'
     else
       render :edit, status: :unprocessable_entity, alert: @contact_list.errors.full_messages
     end
