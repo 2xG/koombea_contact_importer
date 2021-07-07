@@ -6,14 +6,14 @@ class ContactListsController < ApplicationController
   end
 
   def edit
-    redirect_to contact_lists_path, notice: "The list is already processed" unless @contact_list.on_hold?
+    redirect_to contact_lists_path, notice: 'The list is already processed' unless @contact_list.on_hold?
   end
 
   def create
     @contact_list = current_user.contact_lists.build(contact_list_params)
 
     if @contact_list.save
-      redirect_to edit_contact_list_path(@contact_list) #, notice: "Contact list was successfully updated."
+      redirect_to edit_contact_list_path(@contact_list) #, notice: 'Contact list was successfully updated.'
     else
       redirect_to contacts_path, alert: @contact_list.errors.full_messages
     end

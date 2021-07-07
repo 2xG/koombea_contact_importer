@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_055947) do
+ActiveRecord::Schema.define(version: 2021_07_07_080801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_055947) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "contact_list_id"
     t.text "error_list"
+    t.string "encrypted_credit_card"
     t.index ["contact_list_id"], name: "index_contacts_on_contact_list_id"
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end

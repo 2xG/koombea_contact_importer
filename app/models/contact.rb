@@ -1,7 +1,7 @@
 class Contact < ApplicationRecord
   ALLOWED_DATE_FORMATS = %w[%Y%m%d %F].freeze
   ALLOWED_FRANCHISES = %i[amex discover jcb mastercard visa diners].freeze
-  EXCLUDED_ATTRIBUTES = %w[id user_id created_at updated_at contact_list_id franchise imported error_list].freeze
+  EXCLUDED_ATTRIBUTES = %w[id user_id created_at updated_at contact_list_id franchise imported error_list encrypted_credit_card].freeze
 
   enum franchise: ALLOWED_FRANCHISES.zip(ALLOWED_FRANCHISES.map(&:to_s)).to_h
 
@@ -9,6 +9,7 @@ class Contact < ApplicationRecord
   belongs_to :contact_list
 
   before_validation :detect_credit_card_franchise, if: :imported?
+  before_save :encrypt_cc, if: :imported?
 
   with_options(presence: true, if: :imported?) do |present|
     present.validates :name, format: { with: /\A[[:alnum:] -]+\z/ }
@@ -50,5 +51,10 @@ class Contact < ApplicationRecord
 
   def email_uniqueness
     errors.add(:email, :exists) if Contact.where(email: email, user_id: user_id, imported: true).count.positive?
+  end
+
+  def encrypt_cc
+    self[:encrypted_credit_card] = BCrypt::Password.create credit_card
+    self[:credit_card] = credit_card.delete('^0-9').last(4)
   end
 end
