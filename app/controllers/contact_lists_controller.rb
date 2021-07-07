@@ -23,7 +23,8 @@ class ContactListsController < ApplicationController
     if @contact_list.update(contact_list_params)
       redirect_to contact_lists_path, notice: 'Contact list is in the processing queue'
     else
-      render :edit, status: :unprocessable_entity, alert: @contact_list.errors.full_messages
+      flash.now[:error] = @contact_list.errors.full_messages
+      render :edit, status: :unprocessable_entity
     end
   end
 
