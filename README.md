@@ -42,4 +42,7 @@ You can use test CSV from the "example" directory o you can generate a test CSV 
 ```shell
 $ bundle exec rails r csv_generator.rb
 ```
-
+by default this script will generae 1000 line CSV file, but you can modify this number by providing an ENV variable:
+```shell
+$ CSV_LINES=200 bundle exec rails r csv_generator.rb
+```
