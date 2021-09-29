@@ -11,8 +11,7 @@ RSpec.describe Contact, type: :model do
   end
 
   context 'with incorrect data' do
-    before { @contact = build(:contact) }
-    subject(:contact) { @contact }
+    subject(:contact) { build(:contact) }
 
     context 'is not valid' do
       it { expect(contact.tap { |c| c.name = 'Tony+Stark' }).not_to be_valid }
