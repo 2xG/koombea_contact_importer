@@ -1,27 +1,24 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe Contact, type: :model do
 
-  let(:contact) do
-    Contact.new \
-      name: 'Tony Stark',
-      email: 'user@example.com',
-      dob: Date.today.strftime('%F'),
-      phone: '(+57) 320 432 05 09',
-      address: '90210, Sesame street, Narnia',
-      credit_card: '4111111111111111'
+  context 'with correct data' do
+    FactoryBot.factories[:contact].defined_traits.map(&:name).map(&:to_sym).each do |trait|
+      it "with trait #{trait}" do
+        expect(build(:contact, trait)).to be_valid
+      end
+    end
   end
 
-  it { expect(contact).to be_valid }
+  context 'with incorrect data' do
+    subject(:contact) { build(:contact) }
 
-  it { expect(contact.tap { |c| c.name = 'Tony+Stark' }).not_to be_valid }
-
-  it { expect(contact.tap { |c| c.dob = Date.today.strftime('%Y%m%d') }).to be_valid }
-  it { expect(contact.tap { |c| c.dob = Date.today.strftime('%D') }).not_to be_valid }
-  it { expect(contact.tap { |c| c.phone = '(+57) 320-432-05-09' }).to be_valid }
-  it { expect(contact.tap { |c| c.phone = '+57 320 432-0509' }).not_to be_valid }
-  it { expect(contact.tap { |c| c.email = 'user@user@example.com' }).not_to be_valid }
-  it { expect(contact.tap { |c| c.address = '' }).not_to be_valid }
-  it { expect(contact.tap { |c| c.credit_card = CreditCardValidations::Factory.random(:maestro) }).not_to be_valid }
-
+    context 'is not valid' do
+      it { expect(contact.tap { |c| c.name = 'Tony+Stark' }).not_to be_valid }
+      it { expect(contact.tap { |c| c.phone = '+57 320 432-0509' }).not_to be_valid }
+      it { expect(contact.tap { |c| c.email = 'user@user@example.com' }).not_to be_valid }
+      it { expect(contact.tap { |c| c.address = '' }).not_to be_valid }
+      it { expect(contact.tap { |c| c.credit_card = CreditCardValidations::Factory.random(:maestro) }).not_to be_valid }
+    end
+  end
 end
