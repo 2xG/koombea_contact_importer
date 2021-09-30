@@ -3,10 +3,17 @@ require 'spec_helper'
 RSpec.describe Contact, type: :model do
 
   context 'with correct data' do
+    subject(:contact) { build(:contact, user: User.first) }
+    after { Contact.destroy_all }
+
     FactoryBot.factories[:contact].defined_traits.map(&:name).map(&:to_sym).each do |trait|
-      it "with trait #{trait}" do
+      it "with trait #{trait} is valid" do
         expect(build(:contact, trait)).to be_valid
       end
+    end
+
+    it 'can be saved' do
+      expect { subject.save }.to change(Contact, :count).by(1)
     end
   end
 
