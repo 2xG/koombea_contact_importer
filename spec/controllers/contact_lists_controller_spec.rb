@@ -25,17 +25,17 @@ RSpec.describe ContactListsController, type: :controller do
     before { sign_in User.first }
 
     context 'with correct data' do
-      let(:file_path) { './tmp/test.csv' }
       let(:csv) do
-        data = CSV.generate(headers: FactoryBot.attributes_for(:contact).keys) do |csv|
+        data = CSV.generate(headers: FactoryBot.attributes_for(:contact).except(:imported).keys) do |csv|
           attributes_for_list(:contact, 10, imported: nil).each { |attrs| csv << attrs }
         end
-        File.write(file_path, data)
-        fixture_file_upload(file_path, 'text/csv')
+        Tempfile.create do |f|
+          f << data
+          fixture_file_upload(f.path, 'text/csv')
+        end
       end
 
       after do
-        File.delete(file_path) if File.exist?(file_path)
         ContactList.destroy_all
       end
 
@@ -46,7 +46,34 @@ RSpec.describe ContactListsController, type: :controller do
     end
 
     context 'with incorrect data' do
-      skip '🤔' # TODO: what could be incorrect data in that case?
+      skip '🤔' # TODO: wrong file type check
+    end
+  end
+
+  context 'GET edit' do
+    render_views
+
+    before { sign_in User.first }
+    after { ContactList.destroy_all }
+
+    let(:contact_list) do
+      FactoryBot.create(:contact_list)
+    end
+
+    it 'shows first 5 rows of csv' do
+      get(:edit, params: { id: contact_list.id })
+      names = CSV.foreach(ActiveStorage::Blob.service.path_for(contact_list.csv.key), headers: false).take(6)
+      expect(response.body).to include(*names.first(5).flatten.map(&:to_s))
+      expect(response.body).not_to include(*names.last[3])
+    end
+  end
+
+  context 'PUT update' do
+    context 'with correct mapping' do
+
+    end
+    context 'with incorrect mapping' do
+
     end
   end
 end

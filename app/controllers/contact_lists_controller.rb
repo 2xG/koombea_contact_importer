@@ -5,10 +5,6 @@ class ContactListsController < ApplicationController
     @contact_lists = current_user.contact_lists
   end
 
-  def edit
-    redirect_to contact_lists_path, notice: 'The list is already processed' unless @contact_list.on_hold?
-  end
-
   def create
     @contact_list = current_user.contact_lists.build(contact_list_params)
 
@@ -17,6 +13,10 @@ class ContactListsController < ApplicationController
     else
       redirect_to contacts_path, alert: @contact_list.errors.full_messages
     end
+  end
+
+  def edit
+    redirect_to contact_lists_path, notice: 'The list is already processed' unless @contact_list.on_hold?
   end
 
   def update
